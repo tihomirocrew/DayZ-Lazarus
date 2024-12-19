@@ -1,10 +1,9 @@
-﻿#include "GLFW/glfw3.h"
+﻿//#include "GLFW/glfw3.h"
 
 #include "memmane.h"
 #include "overlay.h"
 #include "SDK.h"
-//#include "xorstr.h"
-#include "includes/modules/security/xorstr.h"
+#include "xorstr.hpp"
 #include <DirectXMath.h>
 #include <functional>
 #include <iosfwd>
@@ -13,6 +12,7 @@
 #include <sstream>
 #include <string>
 #include <thread>
+#include "safecall.h"
 
 #define UENGINE __stdcall
 
@@ -331,7 +331,7 @@ uintptr_t GetClosestPlayer(std::vector<uintptr_t> list, float field_of_view)
 
 void SilentAimCallBack()
 {
-	auto* window = ImGui::GetOverlayDrawList();
+	auto* window = ImGui::GetBackgroundDrawList();
 	ImGuiIO& io = ImGui::GetIO();
 
 	Vector3 outPos;
@@ -440,7 +440,7 @@ inline void __stdcall SilentAimFunction(uintptr_t World) {
 void LootTeleportFunction() {
 
 	ImGuiIO& io = ImGui::GetIO();
-	auto* window = ImGui::GetOverlayDrawList();
+	auto* window = ImGui::GetBackgroundDrawList();
 
 	uintptr_t ff = GetClosestItem(EntityListVector, Config::Aim::AimFov);
 	if (!ff)
@@ -493,7 +493,7 @@ namespace DrawColors
 
 void IterateAll(uintptr_t worldptr, std::vector<short> offset)
 {
-	auto* window = ImGui::GetOverlayDrawList();
+	auto* window = ImGui::GetBackgroundDrawList();
 	ImGuiIO& io = ImGui::GetIO();
 
 	
@@ -885,7 +885,7 @@ inline void IsOverlay(ImVec2& ScreenVec)
 }
 void AddDrawItem(uintptr_t Entity, ImVec2 D2D, ImU32 ItemColor, std::string ItemName) {
 
-	auto* window = ImGui::GetOverlayDrawList();
+	auto* window = ImGui::GetBackgroundDrawList();
 
 	IsOverlay(D2D);
 	TempItemOverlayArr.push_back(D2D);
@@ -933,7 +933,7 @@ void DrawItemInventoryList(uintptr_t ItemEntity, ImVec2 D2D, ImU32 ItemColor, st
 
 void IterateItems(uintptr_t pUWorld)
 {
-	auto* window = ImGui::GetOverlayDrawList();
+	auto* window = ImGui::GetBackgroundDrawList();
 
 	int objectTableSz = GameMemory->RVM<int>(pUWorld + OFF_WORLD_ITEMTABLESIZE);
 	uintptr_t entityTable = GameMemory->RVM<uintptr_t>(pUWorld + OFF_WORLD_ITEMTABLE);
@@ -1233,7 +1233,7 @@ void __stdcall main_cheat_handler()
 {
 	//SPOOF_FUNC;
 
-	auto* window = ImGui::GetOverlayDrawList();
+	auto* window = ImGui::GetBackgroundDrawList();
 	ImGuiIO& io = ImGui::GetIO();
 	if (Config::Aim::ShowAimFov)
 		window->AddCircle({ io.DisplaySize.x / 2, io.DisplaySize.y / 2 }, Config::Aim::AimFov, 0xffffffff, 50);
@@ -2038,8 +2038,8 @@ public:
 Menu menu;
 void draw_abigsquare()
 {
-	auto* window = ImGui::GetOverlayDrawList();
-	ImDrawList* drawList = ImGui::GetOverlayDrawList();
+	auto* window = ImGui::GetBackgroundDrawList();
+	ImDrawList* drawList = ImGui::GetBackgroundDrawList();
 	menu.drawMenu(drawList);
 	menu.handleInput();
 

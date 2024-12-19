@@ -1,7 +1,9 @@
-#include "includes/modules/security/lazy_importer.h"
-#include "includes/modules/spoofer/call_stack_spoofer.hpp"
-#include "includes/modules/windows/windows_api.h"
+#include "lazy_importer.hpp"
+#include "call_stack_spoofer.hpp"
+//#include "includes/modules/windows/windows_api.h"
 #include "overlay.h"
+#include <iostream>
+#include "safecall.h"
 
 
 
@@ -61,8 +63,10 @@ void Start()
 #ifdef DebugBuildMode
 
 	AllocConsole();
-	freopen("CONIN$", "r", stdin);
-	freopen("CONOUT$", "w", stdout);
+	FILE* file1{};
+	FILE* file2{};
+	freopen_s(&file1, "CONIN$", "r", stdin);
+	freopen_s(&file2, "CONOUT$", "w", stdout);
 	std::cout << "Lazarus Internal Loaded" << std::endl;
 
 	MainWhile();
@@ -87,8 +91,10 @@ public:
 	NTSTATUS WINAPI CallThreads()
 	{
 		SPOOF_FUNC;
-		const auto start = pThread->pNtCreateThread->NtCreateThreadEx((LPTHREAD_START_ROUTINE)Start, 0, 0);
-		pThread->pNtCreateThread->NtCloseHandle((HANDLE)start);
+		//const auto start = pThread->pNtCreateThread->NtCreateThreadEx((LPTHREAD_START_ROUTINE)Start, 0, 0);
+		//pThread->pNtCreateThread->NtCloseHandle((HANDLE)start);
+		const auto start = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)Start, 0, 0, 0);
+		CloseHandle(start);
 		return TRUE;
 	}
 

@@ -3,8 +3,7 @@
 #include "memory.h"
 #include "vector.h"
 #include <string>
-//#include "xorstr.h"
-#include "includes/modules/security/xorstr.h"
+#include "xorstr.hpp"
 #include <iostream>
 
 

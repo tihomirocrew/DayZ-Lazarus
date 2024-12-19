@@ -1,6 +1,7 @@
 #pragma once
 #include "globals.h"
 #include "offsets.h"
+#include "safecall.h"
 
 //#include "includes/modules/modules.hpp"
 

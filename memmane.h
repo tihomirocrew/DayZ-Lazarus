@@ -2,8 +2,9 @@
 #include <Windows.h>
 #include <sysinfoapi.h>
 #include "vector.h"
-#include "includes/modules/spoofer/call_stack_spoofer.hpp"
-#include "includes/modules/security/lazy_importer.h"
+#include "call_stack_spoofer.hpp"
+#include "lazy_importer.hpp"
+#include "safecall.h"
 #pragma warning(disable : 4996)
 //#include "includes/modules/modules.hpp"
 //#define ALIGN_DOWN_BY(length, alignment) \

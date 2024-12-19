@@ -1,7 +1,7 @@
-
-#include "includes/modules/security/lazy_importer.h"
-#include "includes/modules/security/xorstr.h"
-#include "includes/modules/spoofer/call_stack_spoofer.hpp"
+#include "safecall.h"
+#include "lazy_importer.hpp"
+#include "xorstr.hpp"
+#include "call_stack_spoofer.hpp"
 #include "overlay.h"
 #include <iostream>
 #include <thread>
@@ -92,8 +92,13 @@ void ov::setup_directx(HWND hWnd)
     ImGui_ImplWin32_Init(hWnd);
     ImGui_ImplDX9_Init(p_Device);
 
-    io.Fonts->AddFontFromFileTTF(__("C:\\Windows\\Fonts\\simhei.ttf"), 14, NULL, io.Fonts->GetGlyphRangesChineseFull());
-	globals.CompassFont = io.Fonts->AddFontFromFileTTF(__("C:\\Windows\\Fonts\\simhei.ttf"), 20, NULL, io.Fonts->GetGlyphRangesChineseFull());
+    // original font, but looks ugly with cyrillic letters
+    //io.Fonts->AddFontFromFileTTF(__("simhei.ttf"), 14, NULL, io.Fonts->GetGlyphRangesChineseFull());
+	//globals.CompassFont = io.Fonts->AddFontFromFileTTF(__("simhei.ttf"), 20, NULL, io.Fonts->GetGlyphRangesChineseFull());
+    
+    // that's better
+    io.Fonts->AddFontFromFileTTF(__("C:\\Windows\\Fonts\\Verdana.ttf"), 14, NULL, io.Fonts->GetGlyphRangesCyrillic());
+	globals.CompassFont = io.Fonts->AddFontFromFileTTF(__("C:\\Windows\\Fonts\\Verdana.ttf"), 20, NULL, io.Fonts->GetGlyphRangesCyrillic());
 
     p_Object->Release();
 }
@@ -120,7 +125,7 @@ void ov::render()
     if (safe_call(GetAsyncKeyState)(VK_F1))
     {
         ov::toggle_menu = !ov::toggle_menu;
-       safe_call(Sleep)(300);
+        safe_call(Sleep)(300);
     }
 
     main_cheat_handler();
